@@ -1,50 +1,50 @@
-# github-style
+# 项目介绍
 
-## Init hugo site
+## 简介
 
-```bash
-hugo new site mysite
-cd mysite
-```
+ai-study-room.github.io项目是该组织的文档项目，项目主要为该组织相关项目提供文档说明
+该项目将发布到  [github page](https://ai-study-room.github.io)
 
-## Install the theme
 
-```bash
-git submodule add git@github.com:MeiK2333/github-style.git themes/github-style
-```
+## 项目申明
 
-## Update the theme
+该项目使用[hugo](https://gohugo.io) 作为文档运行程序,使用[book theme](https://github.com/alex-shpak/hugo-book)作为模版。
+在此特别感谢两个组织提供的技术。
 
-If you just installed the theme, it is already in the latest version. If not, you can update using the below commands
 
-```bash
-cd themes/github-style
-git pull
-```
+## 本地运行
 
-Then, you need to rename the previous `posts` folder to `post`
+
+首先需要安装hugo，安装参见[官方文档](https://gohugo.io/getting-started/quick-start/) 中的【installation】
+
+git clone该项目
 
 ```bash
-cd <you-project-folder>
-mv content/posts content/post
+git clone https://github.com/ai-study-room/ai-study-room.github.io
 ```
 
-## Setup readme
+可以选择执行运行，参见如下
+
 
 ```bash
-hugo new readme.md
-echo '`Hello World!`' > content/readme.md
+cd ai-study-room.github.io
+hugo server --bind "0.0.0.0" --baseURL "http://<your ip>:1313" 
 ```
 
-## Pin post
+注明：其中<your ip>需要修改为你机器的地址，需和浏览器访问地址一致。
 
-```
----
-pin: true
----
-```
 
-## Add new post
+运行成功后，通过浏览器输入http://<your ip>:1313访问
+
+
+更多运行方式请参见官方文档。
+
+## 如何增加文档
+
+详细参见theme模版项目[https://github.com/alex-shpak/hugo-book](https://github.com/alex-shpak/hugo-book)
+其中重要部分如下：
+
+### Add new post
 
 Hugo will create a post with `draft: true`, change it to false in order for it to show in the website.
 
@@ -79,37 +79,6 @@ abstraction show in the post page
 other content
 ```
 
-## Add last modified date
-
-add to `config.toml`
-
-```toml
-lastmod = true
-
-[frontmatter]
-  lastmod = ["lastmod", ":fileModTime", ":default"]
-```
-
-## Use [gitalk](https://github.com/gitalk/gitalk) to support comments
-
-add to `config.toml`
-
-```toml
-enableGitalk = true
-
-  [params.gitalk]
-    clientID = "Your client ID"
-    clientSecret = "Your client secret"
-    repo = "repo"
-    owner = "Your Github username"
-    admin = "Your Github username"
-    id = "location.pathname"
-    labels = "gitalk"
-    perPage = 30
-    pagerDirection = "last"
-    createIssueManually = true
-    distractionFreeMode = false
-```
 
 ## Support LaTeX
 
@@ -137,125 +106,4 @@ you can add MathJax:true to frontmatter
 ```
 mathJax: true
 ```
-## config.toml example
 
-```toml
-baseURL = "https://meik2333.com/"
-languageCode = "zh-cn"
-title = "MeiK's blog"
-theme = "github-style"
-pygmentsCodeFences = true
-pygmentsUseClasses = true
-
-[params]
-  author = "MeiK"
-  description = "In solitude, where we are least alone."
-  github = "MeiK2333"
-  facebook = "MeiK2333"
-  twitter = "MeiK2333"
-  linkedin = "MeiK2333"
-  instagram = "MeiK2333"
-  tumblr = "MeiK2333"
-  email = "meik2333@gmail.com"
-  url = "https://meik2333.com"
-  keywords = "blog, google analytics"
-  rss = true
-  lastmod = true
-  userStatusEmoji = "😀"
-  favicon = "/images/github.png"
-  avatar = "/images/avatar.png"
-  headerIcon = "/images/GitHub-Mark-Light-32px.png"
-  location = "China"
-  enableGitalk = true
-
-  [params.gitalk]
-    clientID = "Your client ID"
-    clientSecret = "Your client secret"
-    repo = "repo"
-    owner = "MeiK2333"
-    admin = "MeiK2333"
-    id = "location.pathname"
-    labels = "gitalk"
-    perPage = 15
-    pagerDirection = "last"
-    createIssueManually = true
-    distractionFreeMode = false
-
-  [[params.links]]
-    title = "Link"
-    href = "https://github.com/meik2333"
-  [[params.links]]
-    title = "Link2"
-    href = "https://meik2333.com"
-    icon = "https://meik2333.com/images/avatar.png"
-
-[frontmatter]
-  lastmod = ["lastmod", ":fileModTime", ":default"]
-
-[services]
-  [services.googleAnalytics]
-    ID = "UA-123456-789"
-
-```
-
-## Support collapsible block
-
-You can create a collapsible block like this:
-
-```
-{{<details "summary title">}}
-
-block content
-
-{{</details>}}
-```
-
-And it will show like this:
-
-<details>
-  <summary>summary title</summary>
-  <p>block content</p>
-</details>
-
-## deploy.sh example
-
-There are various way to deploy to github, here is a link to official [document](https://gohugo.io/hosting-and-deployment/hosting-on-github/).
-
-Here is an sample. Note line 22 have `env HUGO_ENV="production"`, makes sure googleAnalysis is loaded during production, but is not loaded when we are testing it in localhost.
-
-```bash
-#!/bin/sh
-
-if [ "`git status -s`" ]
-then
-    echo "The working directory is dirty. Please commit any pending changes."
-    exit 1;
-fi
-
-echo "Deleting old publication"
-rm -rf public
-mkdir public
-git worktree prune
-rm -rf .git/worktrees/public/
-
-echo "Checking out gh-pages branch into public"
-git worktree add -B gh-pages public origin/gh-pages
-
-echo "Removing existing files"
-rm -rf public/*
-
-echo "Generating site"
-env HUGO_ENV="production" hugo -t github-style
-
-echo "Updating gh-pages branch"
-cd public && git add --all && git commit -m "Publishing to gh-pages (publish.sh)"
-
-#echo "Pushing to github"
-#git push --all
-```
-
-Then you can verify the site is working and use `git push --all` to push the change to github. If you don't want to check again every time, you can uncomment the `#git push --all` in the script.
-
-## TODO
-
-- 重写标题导航，那玩意儿引入的 JS 在控制台报错。
