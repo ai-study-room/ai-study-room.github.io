@@ -144,4 +144,8 @@ Kernel driver in use: vfio-pci
 
 其中Kernel driver in use显示为vfio-pci则证明切换成功！
 
+## 相关软件安装
 
+```
+apt-get install golang make
+```
