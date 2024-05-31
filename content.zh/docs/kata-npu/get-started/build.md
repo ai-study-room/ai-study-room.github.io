@@ -319,6 +319,6 @@ go build -o vfio-device-plugin main.go
 
 该部分主要有以下产物，用于后续的实际环境安装:
 
-kata-containers.img ---- kata镜像文件
-vmlinux-nvidia-gpu.container ---- Guest 内核文件
-vfio-device-plugin  ---- k8s相关的device plugin
+* kata-containers.img ---- kata镜像文件
+* vmlinux-nvidia-gpu.container ---- Guest 内核文件
+* vfio-device-plugin  ---- k8s相关的device plugin
